@@ -1,0 +1,90 @@
+{
+  "4bb3b5e10e7f4a18abe43c72d7a4cbb0": {
+    "workflow_id": "4bb3b5e10e7f4a18abe43c72d7a4cbb0",
+    "objective": "Summarize the weekly incident report",
+    "context": {
+      "tenant_id": "tenant-a",
+      "source": "email"
+    },
+    "requested_by": "alice",
+    "stages": [
+      "supervisor",
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "status": "pending"
+  },
+  "d0f6377475654b299af0212c7753c12d": {
+    "workflow_id": "d0f6377475654b299af0212c7753c12d",
+    "objective": "Draft a deployment checklist",
+    "context": {},
+    "requested_by": null,
+    "stages": [
+      "supervisor",
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "status": "pending"
+  },
+  "c6dc200c29484ff8835995d67420fd3c": {
+    "workflow_id": "c6dc200c29484ff8835995d67420fd3c",
+    "objective": "Summarize the weekly incident report",
+    "context": {
+      "tenant_id": "tenant-a",
+      "source": "email"
+    },
+    "requested_by": "alice",
+    "stages": [
+      "supervisor",
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "status": "pending"
+  },
+  "2e1401c700414edab8017ac837d99213": {
+    "workflow_id": "2e1401c700414edab8017ac837d99213",
+    "objective": "Draft a deployment checklist",
+    "context": {},
+    "requested_by": null,
+    "stages": [
+      "supervisor",
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "status": "pending"
+  },
+  "e2162b24aa58413b97881936b3f04c00": {
+    "workflow_id": "e2162b24aa58413b97881936b3f04c00",
+    "objective": "Phase2",
+    "context": {
+      "additionalProp1": "Phase 2 Development"
+    },
+    "requested_by": "Batman",
+    "stages": [
+      "supervisor",
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "status": "pending"
+  },
+  "391d5978cbfd414f876c87a0d620931c": {
+    "workflow_id": "391d5978cbfd414f876c87a0d620931c",
+    "objective": "string",
+    "context": {
+      "additionalProp1": {}
+    },
+    "requested_by": "string",
+    "stages": [
+      "supervisor",
+      "planner",
+      "executor",
+      "reviewer"
+    ],
+    "status": "pending"
+  }
+}
