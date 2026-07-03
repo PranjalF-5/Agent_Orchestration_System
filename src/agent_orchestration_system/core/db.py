@@ -2,9 +2,23 @@ import uuid
 from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, JSON, Boolean, Float, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID, JSONB
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import create_engine
+from agent_orchestration_system.core.config import get_settings
+
+settings = get_settings()
+
+engine = create_engine(settings.postgres_url)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 def get_utc_now():
     return datetime.now(timezone.utc)
