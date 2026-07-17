@@ -4,8 +4,8 @@ import json
 
 url = "http://127.0.0.1:8000/tasks/"
 payload = {
-    "prompt": "Search the web for the latest major news about AI in 2026 and summarize it briefly.",
-    "tenant_id": "api_test_tenant",
+    "prompt": "Go to https://example.com and extract the exact text of the main heading (h1). Use browser_action.",
+    "tenant_id": "test_user",
     "config": {}
 }
 headers = {

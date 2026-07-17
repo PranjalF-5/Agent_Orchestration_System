@@ -67,3 +67,63 @@ registry.register_tool(
     ),
     func=calculator
 )
+
+import ctypes
+
+def browser_action(url: str, css_selector: str = None) -> str:
+    """Automate the browser using Playwright to extract content."""
+    
+    try:
+        from playwright.sync_api import sync_playwright
+        import time
+        
+        with sync_playwright() as p:
+            # We launch headless=False as per user request
+            browser = p.chromium.launch(headless=False)
+            page = browser.new_page()
+            page.goto(url, wait_until="domcontentloaded", timeout=15000)
+            
+            # Wait a bit for JS to render
+            time.sleep(3)
+            
+            if css_selector:
+                try:
+                    locator = page.locator(css_selector).first
+                    text = locator.inner_text()
+                except Exception:
+                    text = f"Could not find elements matching selector: {css_selector}"
+            else:
+                # If no selector, just get the body text
+                text = page.locator("body").inner_text()
+                
+            browser.close()
+            
+            # Return first 2000 chars to avoid overwhelming the LLM
+            return text[:2000] + "..." if len(text) > 2000 else text
+            
+    except Exception as e:
+        return f"Error executing playwright script: {str(e)}"
+
+# Register browser_action
+registry.register_tool(
+    definition=ToolDefinition(
+        name="browser_action",
+        description="Opens a browser, navigates to a URL, and extracts text. Optionally provide a CSS selector (e.g. 'h1' or 'p') to extract specific elements. If no selector is provided, extracts the whole page body.",
+        input_schema={
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "The URL to navigate to."
+                },
+                "css_selector": {
+                    "type": "string",
+                    "description": "Optional CSS selector to extract specific text."
+                }
+            },
+            "required": ["url"]
+        },
+        cache_ttl_seconds=None
+    ),
+    func=browser_action
+)

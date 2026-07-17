@@ -30,9 +30,11 @@ def supervisor_node(state: AgentState):
     You are the Supervisor. Your objective is: {state['objective']}.
     
     Based on the objective and the recent progress, what is the next step?
-    If we need a step-by-step plan, reply EXACTLY with the word 'planner'.
-    If we have a plan and need to execute it, reply EXACTLY with the word 'executor'.
-    If the objective is completely fulfilled based on the recent progress, reply EXACTLY with the word 'FINISH'.
+    - If there is NO plan, reply EXACTLY with the word 'planner'.
+    - If there is a plan and the objective has NOT been fulfilled yet, reply EXACTLY with the word 'executor'.
+    - If the tool outputs or recent progress show that the objective is completely fulfilled, reply EXACTLY with the word 'FINISH'. Do NOT output anything else!
+    
+    WARNING: The executor often completes multiple steps of the plan in a single tool call. If the final result you are looking for is present in the recent progress (e.g. the text you wanted to extract, or the result of a calculation), you MUST output 'FINISH' immediately. Do not keep calling executor.
     
     Current Plan: {state.get('plan', 'None')}
     

@@ -18,7 +18,7 @@ def executor_node(state: AgentState) -> dict:
     tool_schemas = registry.get_all_tool_schemas()
     
     messages = [
-        {"role": "system", "content": "You are the Executor. You have access to tools. Use them to solve the subtask."},
+        {"role": "system", "content": "You are the Executor. You have access to tools. Use them to solve the subtask. If the task involves visiting a specific URL or clicking elements on a page, YOU MUST use the 'browser_action' tool and provide the URL and an optional CSS selector. Otherwise, use 'web_search' for general queries."},
         {"role": "user", "content": prompt}
     ]
     
@@ -27,7 +27,7 @@ def executor_node(state: AgentState) -> dict:
         messages=messages,
         tools=tool_schemas,
         temperature=0.2,
-        max_tokens=500
+        max_tokens=800
     )
     
     response_message = response.choices[0].message
@@ -35,11 +35,13 @@ def executor_node(state: AgentState) -> dict:
     if hasattr(response_message, "tool_calls") and response_message.tool_calls:
         # Convert response_message to dict for litellm if needed, or pass directly
         messages.append(response_message)
+        last_tool_result = ""
         for tool_call in response_message.tool_calls:
             function_name = tool_call.function.name
             function_args = json.loads(tool_call.function.arguments)
             
             tool_result = registry.execute_tool(function_name, function_args)
+            last_tool_result = str(tool_result)
             
             messages.append({
                 "tool_call_id": tool_call.id,
@@ -53,12 +55,17 @@ def executor_node(state: AgentState) -> dict:
             messages=messages,
             tools=tool_schemas,
             temperature=0.2,
-            max_tokens=500
+            max_tokens=800
         )
         content = second_response.choices[0].message.content
-        result = content.strip() if content else "Executed."
+        if content:
+            result = f"{content.strip()}\n\n[Tool Output: {last_tool_result}]"
+        else:
+            result = f"Tool {function_name} executed. Result: {last_tool_result}"
     else:
         result = response_message.content.strip() if response_message.content else "Executed."
+    
+    print(f"Executor output: {result}")
     
     from langchain_core.messages import AIMessage
     return {"sender": "executor", "messages": [AIMessage(content=result)]}
