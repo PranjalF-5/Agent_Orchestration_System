@@ -10,3 +10,5 @@ class TaskRequest(BaseModel):
 class TaskResponse(BaseModel):
     task_id: uuid.UUID = Field(..., description="Unique task identifier")
     status: str = Field(..., description="Task status (e.g., pending, completed)")
+    result: Any = Field(None, description="Final result of the task execution")
+    plan: str = Field(None, description="Generated plan by the agent")

@@ -1,0 +1,38 @@
+/* App specific styles (mostly handled by index.css utility classes) */
+.app-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 3rem;
+  margin-bottom: 8px;
+}
+
+.header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.result-section {
+  margin-top: 32px;
+}
+
+.plan-content, .result-content {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  color: #e2e8f0;
+  border: 1px solid var(--glass-border);
+  line-height: 1.5;
+}

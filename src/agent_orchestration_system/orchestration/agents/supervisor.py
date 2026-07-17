@@ -18,15 +18,26 @@ def supervisor_node(state: AgentState):
         print(f"Failed to query Qdrant: {e}")
         past_context = "No past context available."
     
+    # Get recent messages to provide context of what has been done
+    recent_messages = ""
+    if state.get("messages"):
+        # Take the last 3 messages, excluding the supervisor's own last decision
+        for msg in state["messages"][-3:]:
+            if msg.content not in ["planner", "executor"]:
+                recent_messages += f"- {msg.content}\n"
+
     prompt = f"""
     You are the Supervisor. Your objective is: {state['objective']}.
     
-    Based on the objective, what is the next step?
+    Based on the objective and the recent progress, what is the next step?
     If we need a step-by-step plan, reply EXACTLY with the word 'planner'.
     If we have a plan and need to execute it, reply EXACTLY with the word 'executor'.
-    If the objective is completely fulfilled, reply EXACTLY with the word 'FINISH'.
+    If the objective is completely fulfilled based on the recent progress, reply EXACTLY with the word 'FINISH'.
     
     Current Plan: {state.get('plan', 'None')}
+    
+    Recent Progress/Results:
+    {recent_messages if recent_messages else "None"}
     
     Relevant Past Experiences:
     {past_context}
